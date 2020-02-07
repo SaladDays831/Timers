@@ -16,6 +16,11 @@ class ViewController: UIViewController {
     var timer = Timer()
     var isRunning = false
     var counter = 0.0
+    var stopwatch = "00:00.0" {
+        willSet {
+            timerButton.setTitle(newValue, for: .normal)
+        }
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
@@ -40,31 +45,30 @@ class ViewController: UIViewController {
     
     
     @objc func singleTapped() {
-        //Pause timer. If paused - play
-        startTimer()
+        if isRunning {
+            stopTimer()
+        } else {
+            startTimer()
+        }
     }
     
     @objc func doubleTapped() {
         //save timer value
-        //Set to 0
-        //Present alert
+        print(stopwatch)
+        stopTimer()
+        stopwatch = "00:00.0"
+        counter = 0.0
+        presentSaveAlert()
     }
     
     
     func startTimer() {
         timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
         isRunning = true
-        
     }
-    
-    
-    
-    
-    
     @objc func updateTimer() {
         counter += 0.1
         let floored = Int(floor(counter))
-        //let hour = floored / 3600
         let minute = (floored % 3600) / 60
         var minuteString = String(minute)
         if minute < 10 {
@@ -76,8 +80,34 @@ class ViewController: UIViewController {
             secondString = "0\(second)"
         }
         let rest = String(format: "%.1f", counter).components(separatedBy: ".").last!
-        let stopwatch = "\(minuteString):\(secondString).\(rest)"
-        timerButton.setTitle(stopwatch, for: .normal)
+        stopwatch = "\(minuteString):\(secondString).\(rest)"
+        //timerButton.setTitle(stopwatch, for: .normal)
+    }
+    func stopTimer() {
+        timer.invalidate()
+        isRunning = false
+    }
+    
+    
+    func presentSaveAlert() {
+        let ac = UIAlertController(title: "Save your result", message: nil, preferredStyle: .alert)
+        ac.addTextField { (textField) in
+            textField.placeholder = "Enter a name"
+        }
+        let submitNameAction = UIAlertAction(title: "OK", style: .default) { [unowned ac] _ in
+            var name: String {
+                if let goodName = ac.textFields![0].text, !goodName.isEmpty {
+                    return goodName
+                } else {
+                    return "My result"
+                }
+            }
+            //let name = ac.textFields![0].text
+            
+            print(name)
+        }
+        ac.addAction(submitNameAction)
+        present(ac, animated: true)
     }
     
     
@@ -88,20 +118,4 @@ class ViewController: UIViewController {
     
     
 
-}
-
-
-extension TimeInterval {
-    var minuteSecondMS: String {
-        return String(format:"%d:%02d.%03d", minute, second, millisecond)
-    }
-    var minute: Int {
-        return Int((self/60).truncatingRemainder(dividingBy: 60))
-    }
-    var second: Int {
-        return Int(truncatingRemainder(dividingBy: 60))
-    }
-    var millisecond: Int {
-        return Int((self*1000).truncatingRemainder(dividingBy: 1000))
-    }
 }
