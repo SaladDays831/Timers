@@ -47,19 +47,16 @@ final class PersistenceManager {
     func fetch<T: NSManagedObject>(_ objectType: T.Type) -> [T] {
         
         let entityName = String(describing: objectType)
-        
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        
         do {
             let fetchedObjects = try context.fetch(fetchRequest) as? [T]
             return fetchedObjects ?? [T]()
-            
         } catch {
             print(error)
             return [T]()
         }
-        
     }
+    
     
     func delete(_ object: NSManagedObject) {
         context.delete(object)

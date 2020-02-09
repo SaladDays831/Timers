@@ -18,7 +18,6 @@ class MainViewController: UIViewController {
     
     var timer = Timer()
     var currentStopwatch: Stopwatch?
-    var isRunning = false
     var counter = 0.0
     var stopwatch = "00:00.0" {
         willSet {
@@ -40,6 +39,7 @@ class MainViewController: UIViewController {
         setUpGestureRecognizers()
         tableView.delegate = self
         tableView.dataSource = self
+        fetchStopwatches()
     }
 
     
@@ -54,33 +54,58 @@ class MainViewController: UIViewController {
         timerButton.addGestureRecognizer(singleTap)
     }
     
+    func fetchStopwatches() {
+        let allStopwatches = persistenceManager.fetch(Stopwatch.self)
+        for stopwatch in allStopwatches {
+            if !stopwatch.isFinished {
+                currentStopwatch = stopwatch
+                setCurrentStopwatch()
+            } else {
+                stopwatches.append(stopwatch)
+            }
+        }
+        tableView.reloadData()
+    }
     
-    @objc func singleTapped() {
-        persistenceManager.save()
-        if isRunning {
-            stopTimer()
-        } else {
+    func setCurrentStopwatch() {
+        guard let stopwatch = currentStopwatch else { return }
+        let timeDifference = Date().timeIntervalSince(stopwatch.startDate)
+        self.counter = timeDifference
+        updateTimer()
+        if stopwatch.isRunning {
             startTimer()
         }
     }
     
+    
+    @objc func singleTapped() {
+        if currentStopwatch == nil {
+            currentStopwatch = Stopwatch(context: persistenceManager.context)
+            currentStopwatch?.startDate = Date()
+            currentStopwatch?.isRunning = true
+        }
+        if currentStopwatch!.isRunning {
+            stopTimer()
+        } else {
+            startTimer()
+        }
+        persistenceManager.save()
+    }
+    
     @objc func doubleTapped() {
-        //save timer value
-        print(stopwatch)
         stopTimer()
+        currentStopwatch?.isFinished = true
+        currentStopwatch?.finishTimeString = stopwatch
+        currentStopwatch?.name = "My result"
+        persistenceManager.save()
         counter = 0.0
         presentSaveAlert()
     }
     
     
     func startTimer() {
-        //create new stopwatch if current is empty
-        if currentStopwatch == nil {
-            //currentStopwatch = Stopwatch(isRunning: true, isFinished: false, startDate: Date())
-        }
-        //stopwatches.append(currentStopwatch!)
         timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
-        isRunning = true
+        currentStopwatch?.isRunning = true
     }
     @objc func updateTimer() {
         counter += 0.1
@@ -98,12 +123,11 @@ class MainViewController: UIViewController {
         let rest = String(format: "%.1f", counter).components(separatedBy: ".").last!
         stopwatch = "\(minuteString):\(secondString).\(rest)"
     }
+     
     func stopTimer() {
         timer.invalidate()
-        isRunning = false
-        //currentStopwatch?.isRunning = false
+        currentStopwatch?.isRunning = false
     }
-    
     
     func presentSaveAlert() {
         let ac = UIAlertController(title: "Save your result", message: nil, preferredStyle: .alert)
@@ -119,15 +143,18 @@ class MainViewController: UIViewController {
                     return "My result"
                 }
             }
-            //do stuff with name
-            //let finishedStopwatch = Stopwatch(time: self.stopwatch, name: name)
-            //self.pastStopwatches.append(finishedStopwatch)
+            self.currentStopwatch?.name = name
+            self.stopwatches.append(self.currentStopwatch!)
+            self.currentStopwatch = nil
+            self.persistenceManager.save()
             self.stopwatch = "00:00.0"
             self.tableView.reloadData()
         }
         ac.addAction(submitNameAction)
         present(ac, animated: true)
     }
+    
+    //на закрытии проверять пауза или нет. Сохранять дату паузы
     
     
     
@@ -147,8 +174,8 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "stopwatchCell") as! TimerTableViewCell
-        //cell.nameLabel.text = stopwatches[indexPath.row].name
-        //cell.timeLabel.text = stopwatches[indexPath.row].time
+        cell.nameLabel.text = stopwatches[indexPath.row].name
+        cell.timeLabel.text = stopwatches[indexPath.row].finishTimeString
         
         return cell
     }
