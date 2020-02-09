@@ -25,14 +25,22 @@ class MainViewController: UIViewController {
         }
     }
     
-    var stopwatches = [Stopwatch]()
+    var stopwatches = [Stopwatch]() {
+        willSet {
+            if newValue.count == 0 {
+                let emptyView = EmptyTableView.instanceFromNib()
+                tableView.backgroundView = emptyView
+            } else {
+                tableView.backgroundView = nil
+            }
+        }
+    }
    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         timerButton.makeSoft()
         pastTimersView.makeSoft()
-        print("HEHEHEHE")
     }
 
     override func viewDidLoad() {
@@ -40,6 +48,7 @@ class MainViewController: UIViewController {
         setUpGestureRecognizers()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.tableFooterView = UIView()
         fetchStopwatches()
 
         NotificationCenter.default.addObserver(self, selector: #selector(savePauseDate), name: UIApplication.willResignActiveNotification, object: nil)
@@ -60,10 +69,10 @@ class MainViewController: UIViewController {
     
     @objc func fetchStopwatches() {
         let allStopwatches = persistenceManager.fetch(Stopwatch.self)
+        stopwatches = [Stopwatch]()
         for stopwatch in allStopwatches {
             if !stopwatch.isFinished {
                 currentStopwatch = stopwatch
-                print("We have a runner")
                 setCurrentStopwatch()
             } else {
                 stopwatches.append(stopwatch)
@@ -73,21 +82,18 @@ class MainViewController: UIViewController {
     }
     
     func setCurrentStopwatch() {
-        guard currentStopwatch != nil else { return }
-        let timeDifference = Date().timeIntervalSince(currentStopwatch!.startDate)
-        let pauseTimeInterval = Date().timeIntervalSince(currentStopwatch!.pauseDate!)
-        print(timeDifference, " - ", pauseTimeInterval)
-                
+        let fullTimeInterval = Date().timeIntervalSince(currentStopwatch!.startDate)
         if currentStopwatch!.isRunning {
-            self.counter = timeDifference
-            print("Timer running. COUNTER - ", self.counter)
-            startTimer()
+            //RUNNING
         } else {
-            self.counter = timeDifference - pauseTimeInterval
-            print("Timer paused. COUNTER - ", self.counter)
-            updateTimer()
+            //PAUSED
+            let pauseDate = currentStopwatch!.pauseDate!
+            let pauseToAdd = Date().timeIntervalSince(pauseDate)
+            currentStopwatch!.totalPauseTime += pauseToAdd
+            //adding exess pauseTime. Not working
+            counter = fullTimeInterval - currentStopwatch!.totalPauseTime
+            transformCounterToStopwatch()
         }
-        
     }
     
     
@@ -100,11 +106,16 @@ class MainViewController: UIViewController {
         }
         else if currentStopwatch!.isRunning {
             stopTimer()
+            currentStopwatch?.pauseDate = Date()
         } else {
             startTimer()
+            print(Date().timeIntervalSince(currentStopwatch!.pauseDate!))
+            currentStopwatch?.totalPauseTime += Date().timeIntervalSince(currentStopwatch!.pauseDate!)
+            print("Total pause time = ", currentStopwatch?.totalPauseTime)
         }
         persistenceManager.save()
     }
+    
     
     @objc func doubleTapped() {
         stopTimer()
@@ -123,6 +134,10 @@ class MainViewController: UIViewController {
     }
     @objc func updateTimer() {
         counter += 0.1
+        transformCounterToStopwatch()
+    }
+    
+    func transformCounterToStopwatch() {
         let floored = Int(floor(counter))
         let minute = (floored % 3600) / 60
         var minuteString = String(minute)
@@ -168,11 +183,12 @@ class MainViewController: UIViewController {
         present(ac, animated: true)
     }
     
+    
     @objc func savePauseDate() {
         guard currentStopwatch != nil else { return }
-        print("About to disappear")
         timer.invalidate()
-        currentStopwatch!.pauseDate = Date()
+        
+        //currentStopwatch!.pauseDate = Date()
         persistenceManager.save()
     }
     
