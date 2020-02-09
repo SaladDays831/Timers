@@ -11,12 +11,15 @@
         <array key="Muli-Bold.ttf">
             <string>Muli-Bold</string>
         </array>
+        <array key="Muli-Regular.ttf">
+            <string>Muli-Regular</string>
+        </array>
     </customFonts>
     <scenes>
-        <!--View Controller-->
+        <!--Main View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Timers" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="MainViewController" customModule="Timers" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -33,20 +36,42 @@
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="eJx-b0-pMA">
                                         <rect key="frame" x="8" y="8" width="283" height="371"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="60" id="NH7-UZ-0og">
-                                                <rect key="frame" x="0.0" y="28" width="283" height="60"/>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="stopwatchCell" id="NH7-UZ-0og" customClass="TimerTableViewCell" customModule="Timers" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="28" width="283" height="62.5"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="NH7-UZ-0og" id="n5G-6N-LMc">
-                                                    <rect key="frame" x="0.0" y="0.0" width="283" height="60"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="283" height="62.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jiS-6Q-DGM">
-                                                            <rect key="frame" x="0.0" y="0.0" width="283" height="60"/>
-                                                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="283" height="62.5"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="01:24.2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ps9-5z-AqZ">
+                                                                    <rect key="frame" x="216" y="20.5" width="59" height="22"/>
+                                                                    <fontDescription key="fontDescription" name="Muli-Regular" family="Muli" pointSize="17"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My result" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Niv-8U-EQP">
+                                                                    <rect key="frame" x="8" y="20" width="74" height="22.5"/>
+                                                                    <fontDescription key="fontDescription" name="Muli-Bold" family="Muli" pointSize="17"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <constraints>
+                                                                <constraint firstItem="ps9-5z-AqZ" firstAttribute="centerY" secondItem="jiS-6Q-DGM" secondAttribute="centerY" id="GeH-Zg-Ngw"/>
+                                                                <constraint firstAttribute="trailing" secondItem="ps9-5z-AqZ" secondAttribute="trailing" constant="8" id="cjy-Xz-04x"/>
+                                                                <constraint firstItem="Niv-8U-EQP" firstAttribute="top" secondItem="jiS-6Q-DGM" secondAttribute="top" constant="20" id="jme-Ep-e7C"/>
+                                                                <constraint firstItem="Niv-8U-EQP" firstAttribute="centerY" secondItem="jiS-6Q-DGM" secondAttribute="centerY" id="mVW-8f-l3a"/>
+                                                                <constraint firstItem="Niv-8U-EQP" firstAttribute="leading" secondItem="jiS-6Q-DGM" secondAttribute="leading" constant="8" id="xV8-ks-0Y1"/>
+                                                            </constraints>
                                                         </view>
                                                     </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstItem="jiS-6Q-DGM" firstAttribute="top" secondItem="n5G-6N-LMc" secondAttribute="top" id="Mhc-S8-sgW"/>
                                                         <constraint firstAttribute="trailing" secondItem="jiS-6Q-DGM" secondAttribute="trailing" id="WHS-Xo-ytz"/>
@@ -54,6 +79,11 @@
                                                         <constraint firstAttribute="bottom" secondItem="jiS-6Q-DGM" secondAttribute="bottom" id="lFM-Xr-Z7b"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <connections>
+                                                    <outlet property="nameLabel" destination="Niv-8U-EQP" id="h8D-nD-krm"/>
+                                                    <outlet property="timeLabel" destination="ps9-5z-AqZ" id="x4B-MW-XEw"/>
+                                                </connections>
                                             </tableViewCell>
                                         </prototypes>
                                     </tableView>
@@ -82,10 +112,17 @@
                     </view>
                     <connections>
                         <outlet property="pastTimersView" destination="YfW-mT-xjm" id="WBD-Qe-LgW"/>
+                        <outlet property="tableView" destination="eJx-b0-pMA" id="5uk-sc-3SX"/>
                         <outlet property="timerButton" destination="mVZ-SB-IHt" id="8Pb-LC-HL0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="xb5-TO-UOc">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <viewLayoutGuide key="safeArea" id="9cM-DI-v6Q"/>
+                </view>
             </objects>
             <point key="canvasLocation" x="138.40000000000001" y="97.601199400299862"/>
         </scene>
