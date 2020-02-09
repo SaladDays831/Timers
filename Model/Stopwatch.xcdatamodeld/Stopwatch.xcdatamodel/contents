@@ -5,9 +5,10 @@
         <attribute name="isFinished" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="isRunning" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="pauseDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="startDate" attributeType="Date" usesScalarValueType="NO"/>
     </entity>
     <elements>
-        <element name="Stopwatch" positionX="-63" positionY="-18" width="128" height="118"/>
+        <element name="Stopwatch" positionX="-63" positionY="-18" width="128" height="133"/>
     </elements>
 </model>

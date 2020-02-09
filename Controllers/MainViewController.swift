@@ -32,6 +32,7 @@ class MainViewController: UIViewController {
         super.viewDidAppear(true)
         timerButton.makeSoft()
         pastTimersView.makeSoft()
+        print("HEHEHEHE")
     }
 
     override func viewDidLoad() {
@@ -40,6 +41,9 @@ class MainViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         fetchStopwatches()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(savePauseDate), name: UIApplication.willResignActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(fetchStopwatches), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
 
     
@@ -54,11 +58,12 @@ class MainViewController: UIViewController {
         timerButton.addGestureRecognizer(singleTap)
     }
     
-    func fetchStopwatches() {
+    @objc func fetchStopwatches() {
         let allStopwatches = persistenceManager.fetch(Stopwatch.self)
         for stopwatch in allStopwatches {
             if !stopwatch.isFinished {
                 currentStopwatch = stopwatch
+                print("We have a runner")
                 setCurrentStopwatch()
             } else {
                 stopwatches.append(stopwatch)
@@ -68,13 +73,21 @@ class MainViewController: UIViewController {
     }
     
     func setCurrentStopwatch() {
-        guard let stopwatch = currentStopwatch else { return }
-        let timeDifference = Date().timeIntervalSince(stopwatch.startDate)
-        self.counter = timeDifference
-        updateTimer()
-        if stopwatch.isRunning {
+        guard currentStopwatch != nil else { return }
+        let timeDifference = Date().timeIntervalSince(currentStopwatch!.startDate)
+        let pauseTimeInterval = Date().timeIntervalSince(currentStopwatch!.pauseDate!)
+        print(timeDifference, " - ", pauseTimeInterval)
+                
+        if currentStopwatch!.isRunning {
+            self.counter = timeDifference
+            print("Timer running. COUNTER - ", self.counter)
             startTimer()
+        } else {
+            self.counter = timeDifference - pauseTimeInterval
+            print("Timer paused. COUNTER - ", self.counter)
+            updateTimer()
         }
+        
     }
     
     
@@ -83,8 +96,9 @@ class MainViewController: UIViewController {
             currentStopwatch = Stopwatch(context: persistenceManager.context)
             currentStopwatch?.startDate = Date()
             currentStopwatch?.isRunning = true
+            startTimer()
         }
-        if currentStopwatch!.isRunning {
+        else if currentStopwatch!.isRunning {
             stopTimer()
         } else {
             startTimer()
@@ -154,11 +168,13 @@ class MainViewController: UIViewController {
         present(ac, animated: true)
     }
     
-    //на закрытии проверять пауза или нет. Сохранять дату паузы
-    
-    
-    
-    
+    @objc func savePauseDate() {
+        guard currentStopwatch != nil else { return }
+        print("About to disappear")
+        timer.invalidate()
+        currentStopwatch!.pauseDate = Date()
+        persistenceManager.save()
+    }
     
     
     
