@@ -49,9 +49,9 @@ class MainViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
-        fetchStopwatches()
+        //fetchStopwatches()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(savePauseDate), name: UIApplication.willResignActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(performCloseActions), name: UIApplication.willResignActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(fetchStopwatches), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
 
@@ -82,16 +82,11 @@ class MainViewController: UIViewController {
     }
     
     func setCurrentStopwatch() {
-        let fullTimeInterval = Date().timeIntervalSince(currentStopwatch!.startDate)
         if currentStopwatch!.isRunning {
-            //RUNNING
+            counter = currentStopwatch!.counter + Date().timeIntervalSince(currentStopwatch!.breakDate!)
+            startTimer()
         } else {
-            //PAUSED
-            let pauseDate = currentStopwatch!.pauseDate!
-            let pauseToAdd = Date().timeIntervalSince(pauseDate)
-            currentStopwatch!.totalPauseTime += pauseToAdd
-            //adding exess pauseTime. Not working
-            counter = fullTimeInterval - currentStopwatch!.totalPauseTime
+            counter = currentStopwatch!.counter
             transformCounterToStopwatch()
         }
     }
@@ -100,18 +95,12 @@ class MainViewController: UIViewController {
     @objc func singleTapped() {
         if currentStopwatch == nil {
             currentStopwatch = Stopwatch(context: persistenceManager.context)
-            currentStopwatch?.startDate = Date()
-            currentStopwatch?.isRunning = true
             startTimer()
         }
         else if currentStopwatch!.isRunning {
             stopTimer()
-            currentStopwatch?.pauseDate = Date()
         } else {
             startTimer()
-            print(Date().timeIntervalSince(currentStopwatch!.pauseDate!))
-            currentStopwatch?.totalPauseTime += Date().timeIntervalSince(currentStopwatch!.pauseDate!)
-            print("Total pause time = ", currentStopwatch?.totalPauseTime)
         }
         persistenceManager.save()
     }
@@ -120,7 +109,7 @@ class MainViewController: UIViewController {
     @objc func doubleTapped() {
         stopTimer()
         currentStopwatch?.isFinished = true
-        currentStopwatch?.finishTimeString = stopwatch
+        currentStopwatch?.finishedTimeString = stopwatch
         currentStopwatch?.name = "My result"
         persistenceManager.save()
         counter = 0.0
@@ -184,11 +173,13 @@ class MainViewController: UIViewController {
     }
     
     
-    @objc func savePauseDate() {
+    @objc func performCloseActions() {
         guard currentStopwatch != nil else { return }
         timer.invalidate()
-        
-        //currentStopwatch!.pauseDate = Date()
+        currentStopwatch?.counter = counter
+        if currentStopwatch!.isRunning {
+            currentStopwatch!.breakDate = Date()
+        }
         persistenceManager.save()
     }
     
@@ -207,7 +198,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "stopwatchCell") as! TimerTableViewCell
         cell.nameLabel.text = stopwatches[indexPath.row].name
-        cell.timeLabel.text = stopwatches[indexPath.row].finishTimeString
+        cell.timeLabel.text = stopwatches[indexPath.row].finishedTimeString
         
         return cell
     }
