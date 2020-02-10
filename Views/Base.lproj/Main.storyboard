@@ -24,7 +24,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mVZ-SB-IHt">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mVZ-SB-IHt" customClass="SoftUIButton" customModule="Timers" customModuleProvider="target">
                                 <rect key="frame" x="38" y="40" width="299" height="150"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -152,26 +152,24 @@
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="Tc0-it-PKj"/>
-                                <exclude reference="Atj-IP-hr3"/>
                                 <exclude reference="HzR-AW-wp6"/>
                                 <exclude reference="bOq-xM-A8l"/>
                                 <exclude reference="gBN-qN-jLn"/>
                                 <exclude reference="hYp-Ho-myh"/>
                                 <exclude reference="ldZ-J2-77R"/>
                                 <exclude reference="zck-aJ-Q8j"/>
+                                <exclude reference="Atj-IP-hr3"/>
+                                <exclude reference="wjm-Xv-YTK"/>
+                                <exclude reference="xBm-yF-jxz"/>
                                 <exclude reference="KF5-6y-afk"/>
                                 <exclude reference="RMI-jP-hxl"/>
                                 <exclude reference="kqB-a7-FsE"/>
-                                <exclude reference="wjm-Xv-YTK"/>
-                                <exclude reference="xBm-yF-jxz"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=compact">
                             <mask key="constraints">
                                 <include reference="Tc0-it-PKj"/>
                                 <exclude reference="qMK-As-X2t"/>
-                                <include reference="Atj-IP-hr3"/>
-                                <exclude reference="o5w-Ob-YOP"/>
                                 <exclude reference="1wp-IK-a1R"/>
                                 <exclude reference="9eb-55-hFh"/>
                                 <include reference="HzR-AW-wp6"/>
@@ -183,16 +181,18 @@
                                 <include reference="ldZ-J2-77R"/>
                                 <exclude reference="shr-gn-GHf"/>
                                 <exclude reference="zck-aJ-Q8j"/>
+                                <include reference="Atj-IP-hr3"/>
+                                <exclude reference="o5w-Ob-YOP"/>
+                                <exclude reference="2yk-4A-FNf"/>
+                                <exclude reference="643-Wt-EL7"/>
+                                <include reference="wjm-Xv-YTK"/>
+                                <include reference="xBm-yF-jxz"/>
                                 <exclude reference="9fD-Ym-M0C"/>
                                 <include reference="KF5-6y-afk"/>
                                 <include reference="RMI-jP-hxl"/>
                                 <include reference="kqB-a7-FsE"/>
                                 <exclude reference="rss-nF-hFr"/>
                                 <exclude reference="ui7-9r-m5N"/>
-                                <exclude reference="2yk-4A-FNf"/>
-                                <exclude reference="643-Wt-EL7"/>
-                                <include reference="wjm-Xv-YTK"/>
-                                <include reference="xBm-yF-jxz"/>
                             </mask>
                         </variation>
                     </view>

@@ -42,9 +42,6 @@ class MainViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        timerButton.makeSoft()
-        //pastTimersView.makeSoft()
-        
         if UserDefaults.standard.bool(forKey: "showTutorial") {
             tutorial1Label.isHidden = false
             tutorial2Label.isHidden = false
@@ -62,16 +59,6 @@ class MainViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(performCloseActions), name: UIApplication.willResignActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(fetchStopwatches), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
-    
-    /*
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        coordinator.animate(alongsideTransition: nil) { (_) in
-            self.timerButton.setNeedsDisplay()
-            self.pastTimersView.setNeedsDisplay()
-        }
-    }
-    */
     
     func setUpGestureRecognizers() {
         let doubleTap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
