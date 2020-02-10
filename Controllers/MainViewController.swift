@@ -119,6 +119,7 @@ class MainViewController: UIViewController {
     
     func startTimer() {
         timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+        RunLoop.current.add(timer, forMode: .common)
         currentStopwatch?.isRunning = true
     }
     @objc func updateTimer() {
