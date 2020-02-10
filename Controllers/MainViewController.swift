@@ -49,7 +49,6 @@ class MainViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
-        //fetchStopwatches()
 
         NotificationCenter.default.addObserver(self, selector: #selector(performCloseActions), name: UIApplication.willResignActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(fetchStopwatches), name: UIApplication.didBecomeActiveNotification, object: nil)
@@ -211,6 +210,8 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete) {
             tableView.beginUpdates()
+            persistenceManager.delete(stopwatches[indexPath.row])
+            persistenceManager.save()
             stopwatches.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .top)
             tableView.endUpdates()
