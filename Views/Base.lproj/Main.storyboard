@@ -26,6 +26,7 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mVZ-SB-IHt">
                                 <rect key="frame" x="38" y="40" width="299" height="150"/>
+                                <color key="backgroundColor" red="0.57074654579999995" green="0.78039215689999997" blue="0.55385650730000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="Muli-Bold" family="Muli" pointSize="27"/>
                                 <state key="normal" title="00:00.0">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -98,16 +99,32 @@
                                     <constraint firstAttribute="bottom" secondItem="eJx-b0-pMA" secondAttribute="bottom" constant="8" id="x0a-gy-0g8"/>
                                 </constraints>
                             </view>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to start/pause stopwatch" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0M7-Yv-049">
+                                <rect key="frame" x="106" y="54.5" width="163.5" height="15.5"/>
+                                <fontDescription key="fontDescription" name="Muli-Regular" family="Muli" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Double tap to stop" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e7B-vR-wNU">
+                                <rect key="frame" x="136" y="160" width="103" height="15.5"/>
+                                <fontDescription key="fontDescription" name="Muli-Regular" family="Muli" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.92941176470588238" green="0.94117647058823528" blue="0.95686274509803915" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="mVZ-SB-IHt" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.224888" id="1wp-IK-a1R"/>
+                            <constraint firstItem="e7B-vR-wNU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="2yk-4A-FNf"/>
+                            <constraint firstItem="e7B-vR-wNU" firstAttribute="top" secondItem="mVZ-SB-IHt" secondAttribute="bottom" constant="-30" id="643-Wt-EL7"/>
                             <constraint firstItem="mVZ-SB-IHt" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="9eb-55-hFh"/>
                             <constraint firstItem="YfW-mT-xjm" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="9fD-Ym-M0C"/>
                             <constraint firstItem="mVZ-SB-IHt" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="40" id="VzY-Ta-KeK"/>
                             <constraint firstItem="mVZ-SB-IHt" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="38" id="ccf-Lh-bAC"/>
+                            <constraint firstItem="0M7-Yv-049" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="o5w-Ob-YOP"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="YfW-mT-xjm" secondAttribute="bottom" constant="45" id="qMK-As-X2t"/>
                             <constraint firstItem="YfW-mT-xjm" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="38" id="rss-nF-hFr"/>
+                            <constraint firstItem="mVZ-SB-IHt" firstAttribute="top" secondItem="0M7-Yv-049" secondAttribute="bottom" constant="-30" id="shr-gn-GHf"/>
                             <constraint firstItem="YfW-mT-xjm" firstAttribute="top" secondItem="mVZ-SB-IHt" secondAttribute="bottom" constant="45" id="ui7-9r-m5N"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -116,15 +133,11 @@
                         <outlet property="pastTimersView" destination="YfW-mT-xjm" id="WBD-Qe-LgW"/>
                         <outlet property="tableView" destination="eJx-b0-pMA" id="5uk-sc-3SX"/>
                         <outlet property="timerButton" destination="mVZ-SB-IHt" id="8Pb-LC-HL0"/>
+                        <outlet property="tutorial1Label" destination="0M7-Yv-049" id="X1g-FW-NwJ"/>
+                        <outlet property="tutorial2Label" destination="e7B-vR-wNU" id="YRr-AS-vYa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <view contentMode="scaleToFill" id="xb5-TO-UOc">
-                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                    <viewLayoutGuide key="safeArea" id="9cM-DI-v6Q"/>
-                </view>
             </objects>
             <point key="canvasLocation" x="138.40000000000001" y="97.601199400299862"/>
         </scene>

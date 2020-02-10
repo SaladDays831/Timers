@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
         print(paths[0])
+        UserDefaults.standard.register(defaults: ["showTutorial" : true])
         
         let persistenceManager = PersistenceManager()
         if let mainViewController = window?.rootViewController as? MainViewController {

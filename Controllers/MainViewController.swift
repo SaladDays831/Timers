@@ -12,6 +12,9 @@ class MainViewController: UIViewController {
     
     var persistenceManager: PersistenceManager!
     
+    @IBOutlet weak var tutorial1Label: UILabel!
+    @IBOutlet weak var tutorial2Label: UILabel!
+    
     @IBOutlet weak var timerButton: UIButton!
     @IBOutlet weak var pastTimersView: UIView!
     @IBOutlet weak var tableView: UITableView!
@@ -41,6 +44,11 @@ class MainViewController: UIViewController {
         super.viewDidAppear(true)
         timerButton.makeSoft()
         pastTimersView.makeSoft()
+        if UserDefaults.standard.bool(forKey: "showTutorial") {
+            tutorial1Label.isHidden = false
+            tutorial2Label.isHidden = false
+            UserDefaults.standard.set(false, forKey: "showTutorial")
+        }
     }
 
     override func viewDidLoad() {
@@ -92,6 +100,9 @@ class MainViewController: UIViewController {
     
     
     @objc func singleTapped() {
+        if !tutorial1Label.isHidden {
+            hideTutorial()
+        }
         if currentStopwatch == nil {
             currentStopwatch = Stopwatch(context: persistenceManager.context)
             startTimer()
@@ -181,6 +192,18 @@ class MainViewController: UIViewController {
             currentStopwatch!.breakDate = Date()
         }
         persistenceManager.save()
+    }
+    
+    func hideTutorial() {
+        UIView.animate(withDuration: 1, animations: {
+            self.tutorial2Label.alpha = 0
+            self.tutorial1Label.alpha = 0
+        }) { (success) in
+            if success {
+                self.tutorial2Label.isHidden = true
+                self.tutorial1Label.isHidden = true
+            }
+        }
     }
     
     
